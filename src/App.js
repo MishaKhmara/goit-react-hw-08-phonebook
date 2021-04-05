@@ -1,5 +1,8 @@
-function App() {
-  return <h1>Welcome</h1>;
-}
+import React from 'react';
+import Phonebook from './components/Phonebook';
+
+const App = () => {
+  return <Phonebook />;
+};
 
 export default App;
