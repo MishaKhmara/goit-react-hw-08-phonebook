@@ -16,7 +16,11 @@ class Phonebook extends Component {
   };
 
   addContact = contact => {
-    if (this.state.contacts.some(item => item.name === contact.name)) {
+    if (
+      this.state.contacts.some(
+        item => item.name.toLowerCase() === contact.name.toLowerCase(),
+      )
+    ) {
       alert('This contact is already exist!! Try one more time, please!');
       return;
     }
