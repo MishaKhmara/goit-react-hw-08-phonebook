@@ -1,5 +1,7 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import css from '../Phonebook/Phonebook.module.css';
+
 const initialState = {
   name: '',
   number: '',
@@ -11,14 +13,12 @@ class Form extends Component {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
+
   onHandleSubmit = event => {
     event.preventDefault();
     this.props.addContact(this.state);
     this.setState({ ...initialState });
   };
-  // reset = () => {
-  //   this.setState({ name: '', number: '' });
-  // };
 
   render() {
     const { name, number } = this.state;
@@ -57,4 +57,9 @@ class Form extends Component {
     );
   }
 }
+
+Form.propTypes = {
+  name: PropTypes.string,
+  number: PropTypes.number,
+};
 export default Form;

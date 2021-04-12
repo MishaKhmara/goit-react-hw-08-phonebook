@@ -4,6 +4,8 @@ import Form from '../Form/Form';
 import css from './Phonebook.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import FilterList from '../FilterList/FilterList';
+import PropTypes from 'prop-types';
+
 class Phonebook extends Component {
   state = {
     contacts: [
@@ -14,6 +16,18 @@ class Phonebook extends Component {
     ],
     filter: '',
   };
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   addContact = contact => {
     if (
@@ -34,14 +48,17 @@ class Phonebook extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
   getFilteredContacts() {
     return this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
     );
   }
+
   onFilterHandleChange = filter => {
     this.setState({ filter });
   };
+
   render() {
     const visibleContacts = this.getFilteredContacts();
     const { filter } = this.state;
@@ -58,9 +75,14 @@ class Phonebook extends Component {
         <ContactsList
           contact={visibleContacts}
           ondeleteContact={this.deleteContact}
-        />
+        ></ContactsList>
       </div>
     );
   }
 }
+
+Phonebook.propTypes = {
+  contacts: PropTypes.array,
+  filter: PropTypes.string,
+};
 export default Phonebook;

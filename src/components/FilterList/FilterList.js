@@ -1,4 +1,5 @@
 import css from '../Phonebook/Phonebook.module.css';
+import PropTypes from 'prop-types';
 
 const FilterList = ({ filter, onFilterHandleChange }) => {
   const onHandleChange = event => {
@@ -16,6 +17,11 @@ const FilterList = ({ filter, onFilterHandleChange }) => {
       />
     </label>
   );
+};
+
+FilterList.propTypes = {
+  filter: PropTypes.string.isRequired,
+  onFilterHandleChange: PropTypes.func,
 };
 
 export default FilterList;
