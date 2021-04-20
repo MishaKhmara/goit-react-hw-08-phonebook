@@ -5,70 +5,66 @@ import css from './Phonebook.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import FilterList from '../FilterList/FilterList';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import {
+  GetContacts,
+  addContact,
+  deleteContact,
+  filterContacts,
+} from '../../redux/contacts/contactsAction';
 
 class Phonebook extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
   componentDidMount() {
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
     if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+      this.props.GetContacts(parsedContacts);
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    if (this.props.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.props.contacts));
     }
   }
 
   addContact = contact => {
     if (
-      this.state.contacts.some(
+      this.props.contacts.some(
         item => item.name.toLowerCase() === contact.name.toLowerCase(),
       )
     ) {
       alert('This contact is already exist!! Try one more time, please!');
       return;
     }
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, { ...contact, id: uuidv4() }],
-    }));
+
+    this.props.addContact({ id: uuidv4(), ...contact });
   };
 
   deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+    this.props.deleteContact(contactId);
   };
 
   getFilteredContacts() {
-    return this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
+    return this.props.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(this.props.filter.toLowerCase()),
     );
   }
 
   onFilterHandleChange = filter => {
-    this.setState({ filter });
+    this.props.filterContacts(filter);
   };
 
   render() {
     const visibleContacts = this.getFilteredContacts();
-    const { filter } = this.state;
+
     return (
       <div className={css.wraper}>
         <h1>Phonebook</h1>
         <Form addContact={this.addContact} />
         <h2>Contacts</h2>
         <FilterList
-          filter={filter}
+          filter={this.props.filter}
           onFilterHandleChange={this.onFilterHandleChange}
         />
 
@@ -85,4 +81,20 @@ Phonebook.propTypes = {
   contacts: PropTypes.array,
   filter: PropTypes.string,
 };
-export default Phonebook;
+
+const mapStateToProps = state => {
+  return {
+    contacts: state.contacts.items,
+
+    filter: state.contacts.filter,
+  };
+};
+
+const mapDispatchToProps = {
+  GetContacts,
+  addContact,
+  deleteContact,
+  filterContacts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);

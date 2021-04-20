@@ -2,12 +2,12 @@ import {
   GETCONTACTS,
   ADDCONTACT,
   DELETECONTACT,
-  EDITCONTACT,
+  // EDITCONTACT,
   FILTERCONTACTS,
-  SETERROR,
-  RESETERROR,
-  SETLOADINGTRUE,
-  SETLOADINGFALSE,
+  // SETERROR,
+  // RESETERROR,
+  // SETLOADINGTRUE,
+  // SETLOADINGFALSE,
 } from './contactsConstants';
 
 const GetContacts = contacts => {
@@ -31,12 +31,12 @@ const deleteContact = id => {
   };
 };
 
-const editContact = contact => {
-  return {
-    type: EDITCONTACT,
-    payload: contact,
-  };
-};
+// const editContact = contact => {
+//   return {
+//     type: EDITCONTACT,
+//     payload: contact,
+//   };
+// };
 
 const filterContacts = value => {
   return {
@@ -45,39 +45,38 @@ const filterContacts = value => {
   };
 };
 
-const setEroorContact = error => {
-  return {
-    type: SETERROR,
-    payload: error,
-  };
-};
+// const setEroorContact = error => {
+//   return {
+//     type: SETERROR,
+//     payload: error,
+//   };
+// };
 
-const resetEroorContact = () => {
-  return {
-    type: RESETERROR,
-  };
-};
+// const resetEroorContact = () => {
+//   return {
+//     type: RESETERROR,
+//   };
+// };
 
-const setLoadingContactTrue = () => {
-  return {
-    type: SETLOADINGTRUE,
-  };
-};
+// const setLoadingContactTrue = () => {
+//   return {
+//     type: SETLOADINGTRUE,
+//   };
+// };
 
-const setLoadingContactFalse = () => {
-  return {
-    type: SETLOADINGFALSE,
-  };
-};
+// const setLoadingContactFalse = () => {
+//   return {
+//     type: SETLOADINGFALSE,
+//   };
+// };
 
 export {
   GetContacts,
   addContact,
   deleteContact,
-  editContact,
   filterContacts,
-  setEroorContact,
-  resetEroorContact,
-  setLoadingContactTrue,
-  setLoadingContactFalse,
+  // setEroorContact,
+  // resetEroorContact,
+  // setLoadingContactTrue,
+  // setLoadingContactFalse,
 };
