@@ -9,27 +9,45 @@ import {
   // SETLOADINGTRUE,
   // SETLOADINGFALSE,
 } from './contactsConstants';
+import { createAction } from '@reduxjs/toolkit';
 
-const GetContacts = contacts => {
-  return {
-    type: GETCONTACTS,
-    payload: contacts,
-  };
-};
+const GetContacts = createAction(GETCONTACTS);
 
-const addContact = contact => {
-  return {
-    type: ADDCONTACT,
-    payload: contact,
-  };
-};
+const addContact = createAction(ADDCONTACT);
 
-const deleteContact = id => {
-  return {
-    type: DELETECONTACT,
-    payload: id,
-  };
-};
+const deleteContact = createAction(DELETECONTACT);
+
+const filterContacts = createAction(FILTERCONTACTS);
+
+//////////////////////////////////////////////////////
+
+// const GetContacts = contacts => {
+//   return {
+//     type: GETCONTACTS,
+//     payload: contacts,
+//   };
+// };
+
+// const addContact = contact => {
+//   return {
+//     type: ADDCONTACT,
+//     payload: contact,
+//   };
+// };
+
+// const deleteContact = id => {
+//   return {
+//     type: DELETECONTACT,
+//     payload: id,
+//   };
+// };
+
+// const filterContacts = value => {
+//   return {
+//     type: FILTERCONTACTS,
+//     payload: value,
+//   };
+// };
 
 // const editContact = contact => {
 //   return {
@@ -37,13 +55,6 @@ const deleteContact = id => {
 //     payload: contact,
 //   };
 // };
-
-const filterContacts = value => {
-  return {
-    type: FILTERCONTACTS,
-    payload: value,
-  };
-};
 
 // const setEroorContact = error => {
 //   return {

@@ -1,40 +1,57 @@
 import { combineReducers } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
 import {
-  GETCONTACTS,
-  ADDCONTACT,
-  DELETECONTACT,
-  FILTERCONTACTS,
-  // SETERROR,
-  // RESETERROR,
-  // SETLOADINGTRUE,
-  // SETLOADINGFALSE,
-} from './contactsConstants';
+  addContact,
+  deleteContact,
+  filterContacts,
+  GetContacts,
+} from './contactsAction';
 
-const contactsItem = (state = [], { type, payload }) => {
-  switch (type) {
-    case GETCONTACTS:
-      return [...payload];
+const initialState = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
-    case ADDCONTACT:
-      return [...state, payload];
+const contactsItem = createReducer(initialState, {
+  [GetContacts]: (_, { payload }) => [...payload],
+  [addContact]: (state, { payload }) => [...state, payload],
+  [deleteContact]: (state, { payload }) => [
+    ...state.filter(contact => contact.id !== payload),
+  ],
+});
 
-    case DELETECONTACT:
-      return [...state.filter(contact => contact.id !== payload)];
+const contactsFilter = createReducer('', {
+  [filterContacts]: (_, action) => action.payload,
+});
+////////////////Redux////////////////////////////////
 
-    default:
-      return state;
-  }
-};
+// const contactsItem = (state = [], { type, payload }) => {
+//   switch (type) {
+//     case GETCONTACTS:
+//       return [...payload];
 
-const contactsFilter = (state = '', { type, payload }) => {
-  switch (type) {
-    case FILTERCONTACTS:
-      return payload;
+//     case ADDCONTACT:
+//       return [...state, payload];
 
-    default:
-      return state;
-  }
-};
+//     case DELETECONTACT:
+//       return [...state.filter(contact => contact.id !== payload)];
+
+//     default:
+//       return state;
+//   }
+// };
+
+// const contactsFilter = (state = '', { type, payload }) => {
+//   switch (type) {
+//     case FILTERCONTACTS:
+//       return payload;
+
+//     default:
+//       return state;
+//   }
+// };
 
 // const contactsError = (state = '', action) => {
 //   switch (action.type) {
