@@ -1,93 +1,38 @@
-import {
-  GETCONTACTS,
-  ADDCONTACT,
-  DELETECONTACT,
-  // EDITCONTACT,
-  FILTERCONTACTS,
-  // SETERROR,
-  // RESETERROR,
-  // SETLOADINGTRUE,
-  // SETLOADINGFALSE,
-} from './contactsConstants';
-import { createAction } from '@reduxjs/toolkit';
+import { createAction, nanoid } from '@reduxjs/toolkit';
 
-const GetContacts = createAction(GETCONTACTS);
+const addNumber = createAction('number/addNumber', number => ({
+  payload: { ...number, id: nanoid() },
+}));
 
-const addContact = createAction(ADDCONTACT);
+const deleteNumber = createAction('number/deleteNumber');
+const filteredNumber = createAction('number/filteredNumber');
 
-const deleteContact = createAction(DELETECONTACT);
+//getAll
+const fetchNumbersRequested = createAction('number/fetch-numbers-requested');
+const fetchNumbersSuccess = createAction('number/fetch-numbers-success');
+const fetchNumbersFailure = createAction('number/fetch-numbers-failure');
 
-const filterContacts = createAction(FILTERCONTACTS);
+//add
+const addNumberRequested = createAction('number/add-number-requested');
+const addNumberSuccess = createAction('number/add-number-success');
+const addNumberFailure = createAction('number/add-number-failure');
 
-//////////////////////////////////////////////////////
-
-// const GetContacts = contacts => {
-//   return {
-//     type: GETCONTACTS,
-//     payload: contacts,
-//   };
-// };
-
-// const addContact = contact => {
-//   return {
-//     type: ADDCONTACT,
-//     payload: contact,
-//   };
-// };
-
-// const deleteContact = id => {
-//   return {
-//     type: DELETECONTACT,
-//     payload: id,
-//   };
-// };
-
-// const filterContacts = value => {
-//   return {
-//     type: FILTERCONTACTS,
-//     payload: value,
-//   };
-// };
-
-// const editContact = contact => {
-//   return {
-//     type: EDITCONTACT,
-//     payload: contact,
-//   };
-// };
-
-// const setEroorContact = error => {
-//   return {
-//     type: SETERROR,
-//     payload: error,
-//   };
-// };
-
-// const resetEroorContact = () => {
-//   return {
-//     type: RESETERROR,
-//   };
-// };
-
-// const setLoadingContactTrue = () => {
-//   return {
-//     type: SETLOADINGTRUE,
-//   };
-// };
-
-// const setLoadingContactFalse = () => {
-//   return {
-//     type: SETLOADINGFALSE,
-//   };
-// };
+//remove
+const removeNumberRequested = createAction('number/remove-number-requested');
+const removeNumberSuccess = createAction('number/remove-number-success');
+const removeNumberFailure = createAction('number/remove-number-failure');
 
 export {
-  GetContacts,
-  addContact,
-  deleteContact,
-  filterContacts,
-  // setEroorContact,
-  // resetEroorContact,
-  // setLoadingContactTrue,
-  // setLoadingContactFalse,
+  addNumber,
+  deleteNumber,
+  filteredNumber,
+  fetchNumbersRequested,
+  fetchNumbersSuccess,
+  fetchNumbersFailure,
+  addNumberRequested,
+  addNumberSuccess,
+  addNumberFailure,
+  removeNumberRequested,
+  removeNumberSuccess,
+  removeNumberFailure,
 };

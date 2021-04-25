@@ -1,5 +1,7 @@
 import css from '../Phonebook/Phonebook.module.css';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getFilter } from '../../redux/contacts/contactSelector';
+import { filteredNumber } from '../../redux/contacts/contactsAction';
 
 const FilterList = ({ filter, onFilterHandleChange }) => {
   const onHandleChange = event => {
@@ -19,9 +21,12 @@ const FilterList = ({ filter, onFilterHandleChange }) => {
   );
 };
 
-FilterList.propTypes = {
-  filter: PropTypes.string.isRequired,
-  onFilterHandleChange: PropTypes.func,
+const mapStateToProps = state => ({
+  filter: getFilter(state),
+});
+
+const mapDispatchToProps = {
+  onFilterHandleChange: filteredNumber,
 };
 
-export default FilterList;
+export default connect(mapStateToProps, mapDispatchToProps)(FilterList);

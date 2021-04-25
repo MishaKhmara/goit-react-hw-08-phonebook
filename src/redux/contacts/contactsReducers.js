@@ -1,76 +1,66 @@
-import { combineReducers } from 'redux';
-import { createReducer } from '@reduxjs/toolkit';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
+
 import {
-  addContact,
-  deleteContact,
-  filterContacts,
-  GetContacts,
+  filteredNumber,
+  fetchNumbersRequested,
+  fetchNumbersSuccess,
+  fetchNumbersFailure,
+  addNumberRequested,
+  addNumberSuccess,
+  addNumberFailure,
+  removeNumberRequested,
+  removeNumberSuccess,
+  removeNumberFailure,
 } from './contactsAction';
 
-const initialState = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
-
-const contactsItem = createReducer(initialState, {
-  [GetContacts]: (_, { payload }) => [...payload],
-  [addContact]: (state, { payload }) => [...state, payload],
-  [deleteContact]: (state, { payload }) => [
-    ...state.filter(contact => contact.id !== payload),
-  ],
+const loading = createReducer(false, {
+  [fetchNumbersRequested]: () => true,
+  [fetchNumbersSuccess]: () => false,
+  [fetchNumbersFailure]: () => false,
+  [addNumberRequested]: () => true,
+  [addNumberSuccess]: () => false,
+  [addNumberFailure]: () => false,
+  [removeNumberRequested]: () => true,
+  [removeNumberSuccess]: () => false,
+  [removeNumberFailure]: () => false,
 });
 
-const contactsFilter = createReducer('', {
-  [filterContacts]: (_, action) => action.payload,
-});
-////////////////Redux////////////////////////////////
+const numberReducer = createReducer(
+  [],
 
-// const contactsItem = (state = [], { type, payload }) => {
-//   switch (type) {
-//     case GETCONTACTS:
-//       return [...payload];
+  {
+    [fetchNumbersSuccess]: (_, { payload }) => payload,
 
-//     case ADDCONTACT:
-//       return [...state, payload];
+    [addNumberSuccess]: (state, { payload }) => [...state, payload],
+    [removeNumberSuccess]: (state, { payload }) => {
+      const index = state.findIndex(({ id }) => id === Number(payload));
 
-//     case DELETECONTACT:
-//       return [...state.filter(contact => contact.id !== payload)];
+      return [...state.slice(0, index), ...state.slice(index + 1)];
+    },
+  },
+);
 
-//     default:
-//       return state;
-//   }
-// };
+const handleError = (_, { payload }) => payload.response.data;
+const clearError = () => null;
 
-// const contactsFilter = (state = '', { type, payload }) => {
-//   switch (type) {
-//     case FILTERCONTACTS:
-//       return payload;
-
-//     default:
-//       return state;
-//   }
-// };
-
-// const contactsError = (state = '', action) => {
-//   switch (action.type) {
-//     default:
-//       return state;
-//   }
-// };
-// const contactsLoading = (state = false, action) => {
-//   switch (action.type) {
-//     default:
-//       return state;
-//   }
-// };
-
-const contactsReducer = combineReducers({
-  items: contactsItem,
-  filter: contactsFilter,
-  // error: contactsError,
-  // loading: contactsLoading,
+const error = createReducer(null, {
+  [fetchNumbersRequested]: clearError,
+  [fetchNumbersFailure]: handleError,
+  [addNumberRequested]: clearError,
+  [addNumberFailure]: handleError,
+  [removeNumberRequested]: clearError,
+  [removeNumberFailure]: handleError,
 });
 
-export default contactsReducer;
+const filterReducer = createReducer('', {
+  [filteredNumber]: (_, action) => action.payload,
+});
+
+const contactsReducersr = combineReducers({
+  loading,
+  contactList: numberReducer,
+  error,
+  filter: filterReducer,
+});
+
+export default contactsReducersr;

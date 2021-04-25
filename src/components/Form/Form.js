@@ -1,6 +1,8 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import css from '../Phonebook/Phonebook.module.css';
+import { connect } from 'react-redux';
+import { addNumber } from '../../redux/contacts/contactsOperations';
 
 const initialState = {
   name: '',
@@ -16,7 +18,7 @@ class Form extends Component {
 
   onHandleSubmit = event => {
     event.preventDefault();
-    this.props.addContact(this.state);
+    this.props.addNumber(this.state);
     this.setState({ ...initialState });
   };
 
@@ -57,9 +59,6 @@ class Form extends Component {
     );
   }
 }
+const mapDispatchToProps = { addNumber };
 
-Form.propTypes = {
-  name: PropTypes.string,
-  number: PropTypes.number,
-};
-export default Form;
+export default connect(null, mapDispatchToProps)(Form);
