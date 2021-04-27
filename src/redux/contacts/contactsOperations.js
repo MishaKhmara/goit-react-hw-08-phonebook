@@ -11,23 +11,23 @@ import {
   removeNumberFailure,
 } from './contactsAction';
 
-axios.defaults.baseURL = 'http://localhost:3004';
+// axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 const fetchNumbers = () => async dispatch => {
   dispatch(fetchNumbersRequested());
   try {
-    const { data } = await axios.get('/numbers');
+    const { data } = await axios.get('/contacts');
     dispatch(fetchNumbersSuccess(data));
   } catch (error) {
     dispatch(fetchNumbersFailure(error));
   }
 };
 
-const deleteNumber = id => async dispatch => {
+const deleteNumber = contactId => async dispatch => {
   dispatch(removeNumberRequested());
   try {
-    await axios.delete(`/numbers/${id}`);
-    dispatch(removeNumberSuccess(id));
+    await axios.delete(`/contacts/${contactId}`);
+    dispatch(removeNumberSuccess(contactId));
   } catch (error) {
     dispatch(removeNumberFailure(error));
   }
@@ -36,7 +36,7 @@ const deleteNumber = id => async dispatch => {
 const addNumber = contact => async dispatch => {
   dispatch(addNumberRequested());
   try {
-    const { data } = await axios.post(`/numbers`, contact);
+    const { data } = await axios.post(`/contacts`, contact);
 
     dispatch(addNumberSuccess(data));
   } catch (error) {

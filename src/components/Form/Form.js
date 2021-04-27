@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import { nanoid } from '@reduxjs/toolkit';
 import css from '../Phonebook/Phonebook.module.css';
 import { connect } from 'react-redux';
 import { addNumber } from '../../redux/contacts/contactsOperations';
@@ -16,9 +16,21 @@ class Form extends Component {
     this.setState({ [name]: value });
   };
 
+  addContact = contact => {
+    if (
+      this.props.contacts.some(
+        item => item.name.toLowerCase() === contact.name.toLowerCase(),
+      )
+    ) {
+      alert('This contact is already exist!! Try one more time, please!');
+      return;
+    }
+
+    this.props.addNumber({ id: nanoid(), ...contact });
+  };
   onHandleSubmit = event => {
     event.preventDefault();
-    this.props.addNumber(this.state);
+    this.addContact(this.state);
     this.setState({ ...initialState });
   };
 
@@ -59,6 +71,9 @@ class Form extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  contacts: state.contacts.contactList,
+});
 const mapDispatchToProps = { addNumber };
 
-export default connect(null, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

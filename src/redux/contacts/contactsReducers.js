@@ -33,7 +33,7 @@ const numberReducer = createReducer(
 
     [addNumberSuccess]: (state, { payload }) => [...state, payload],
     [removeNumberSuccess]: (state, { payload }) => {
-      const index = state.findIndex(({ id }) => id === Number(payload));
+      const index = state.findIndex(({ id }) => id === payload);
 
       return [...state.slice(0, index), ...state.slice(index + 1)];
     },
