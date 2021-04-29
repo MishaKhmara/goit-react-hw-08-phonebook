@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ContactsList from '../ContactsList/ContactsList';
 import Form from '../Form/Form';
 
@@ -11,36 +11,27 @@ import Loader from '../Loader/Loader';
 
 import { fetchNumbers } from '../../redux/contacts/contactsOperations';
 
-class Phonebook extends Component {
-  componentDidMount() {
-    this.props.fetchNumbers();
-  }
+export default function Phonebook() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getLoading);
 
-  render() {
-    return (
-      <div className={css.wraper}>
-        <h1>Phonebook</h1>
-        <Form />
-        {!this.props.isLoading ? (
-          <>
-            <h2> Contacts </h2>
-            <FilterList />
-            <ContactsList />
-          </>
-        ) : (
-          <Loader />
-        )}
-      </div>
-    );
-  }
+  useEffect(() => {
+    dispatch(fetchNumbers());
+  }, [dispatch]);
+
+  return (
+    <div className={css.wraper}>
+      <h1>Phonebook</h1>
+      <Form />
+      {!isLoading ? (
+        <>
+          <h2> Contacts </h2>
+          <FilterList />
+          <ContactsList />
+        </>
+      ) : (
+        <Loader />
+      )}
+    </div>
+  );
 }
-
-const mapStateToProps = state => ({
-  isLoading: getLoading(state),
-});
-
-const mapDispatchToProps = {
-  fetchNumbers,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);

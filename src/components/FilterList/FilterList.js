@@ -1,12 +1,13 @@
-import css from '../Phonebook/Phonebook.module.css';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getFilter } from '../../redux/contacts/contactSelector';
 import { filteredNumber } from '../../redux/contacts/contactsAction';
+import css from '../Phonebook/Phonebook.module.css';
 
-const FilterList = ({ filter, onFilterHandleChange }) => {
-  const onHandleChange = event => {
-    onFilterHandleChange(event.target.value);
-  };
+export default function FilterList() {
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+  const onHandleChange = e => dispatch(filteredNumber(e.target.value));
+
   return (
     <label className={css.label}>
       Find contacts by name
@@ -19,14 +20,4 @@ const FilterList = ({ filter, onFilterHandleChange }) => {
       />
     </label>
   );
-};
-
-const mapStateToProps = state => ({
-  filter: getFilter(state),
-});
-
-const mapDispatchToProps = {
-  onFilterHandleChange: filteredNumber,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterList);
+}

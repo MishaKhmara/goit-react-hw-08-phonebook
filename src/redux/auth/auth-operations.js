@@ -30,6 +30,8 @@ const token = {
  * body { name, email, password }
  *
  * После успешной регистрации добавляем токен в HTTP-заголовок
+ *
+ *
  */
 const register = credentials => async dispatch => {
   dispatch(registerRequest());
